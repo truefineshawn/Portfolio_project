@@ -20,7 +20,7 @@ order by 2, 3;
 
 -- Looking at countries with highest infection rate compared to population
 
-SELECT location, MAX(total_cases) as highest_infection, population, (max(total_cases)/population)*100 as percent_population_infected
+SELECT location, MAX(total_cases) as highest_infection, population, max(total_cases/population)*100 as percent_population_infected
 FROM `coviddeath`  
 where continent is not null
 group by location, population
@@ -28,7 +28,7 @@ order by percent_population_infected DESC;
 
 -- Showing countries with highest death count per population
 
-SELECT location, MAX(total_deaths) as total_deaths_count, population, (MAX(total_deaths)/population)*100 as percent_population_died
+SELECT location, MAX(total_deaths) as total_deaths_count, population, MAX(total_deaths/population)*100 as percent_population_died
 FROM `coviddeath`  
 where continent is not null AND location not in ('world', 'Upper middle income', 'High income', 'Lower middle income', 'Low income')
 group by location, population
@@ -37,9 +37,9 @@ order by percent_population_died DESC;
 -- Breaking down by continent
 -- Showing continents with highest death count
 
-SELECT location, max(total_deaths) as total_deaths_count
+SELECT location, sum(new_deaths) as total_deaths_count
 FROM coviddeath 
-where continent is null and location not in ('World', 'High income', 'Low income', 'Upper middle income', 'lower middle income', 'international')
+where continent is null and location not in ('World', 'High income', 'Low income', 'Upper middle income', 'lower middle income', 'international', 'European union')
 group by location
 order by total_deaths_count DESC;
 
